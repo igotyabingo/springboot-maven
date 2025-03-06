@@ -12,15 +12,18 @@ import java.util.List;
 public class SimpleProductService {
     private ListProductRepository listProductRepository;
     private ModelMapper modelMapper;
+    private ValidationService validationService;
 
     @Autowired
-    SimpleProductService(ListProductRepository listProductRepository, ModelMapper modelMapper) {
+    SimpleProductService(ListProductRepository listProductRepository, ModelMapper modelMapper, ValidationService validationService) {
         this.listProductRepository = listProductRepository;
         this.modelMapper = modelMapper;
+        this.validationService = validationService;
     }
 
     public ProductDto add(ProductDto productDto) {
         Product product = modelMapper.map(productDto, Product.class);
+        validationService.checkValid(product);
         Product savedProduct = listProductRepository.add(product);
         ProductDto savedProductDto = modelMapper.map(savedProduct, ProductDto.class);
         return savedProductDto;

@@ -1,5 +1,6 @@
 package me.woosuyeon.product.management.presentation;
 
+import jakarta.validation.Valid;
 import me.woosuyeon.product.management.application.SimpleProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +16,7 @@ public class ProductController {
         this.simpleProductService = simpleProductService;
     }
     @RequestMapping(value = "/products", method = RequestMethod.POST)
-    public ProductDto createProduct(@RequestBody ProductDto productDto) {
+    public ProductDto createProduct(@Valid @RequestBody ProductDto productDto) {
         return simpleProductService.add(productDto);
     }
 

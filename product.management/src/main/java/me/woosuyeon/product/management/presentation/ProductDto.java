@@ -1,9 +1,14 @@
 package me.woosuyeon.product.management.presentation;
 
+import jakarta.validation.constraints.NotNull;
+
 public class ProductDto {
     private Long id;
+    @NotNull
     private String name;
+    @NotNull
     private Integer price;
+    @NotNull
     private Integer amount;
 
     public Long getId() {
