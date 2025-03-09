@@ -15,15 +15,9 @@ public class UrlApiController {
 
     // 1. 단축 URL 생성 API
     @RequestMapping(value = "/api/create", method = RequestMethod.POST)
-    public ResponseEntity<String> createNewKey(@RequestBody String originalUrl) {
-        String createdKey = urlService.createNewKey(originalUrl);
-        return ResponseEntity.ok().body(createdKey);
-    }
-
-    // 2. 단축 URL 리다이렉트 API
-    @RequestMapping(value = "/{key}", method = RequestMethod.GET)
-    public void redirectToOriginalUrl(@PathVariable String key) {
-        urlService.redirectToOriginalUrl(key);
+    public ResponseEntity<ShortenUrlDto> createNewKey(@RequestBody ShortenUrlDto shortenUrlDto) {
+        ShortenUrlDto savedDto = urlService.createNewKey(shortenUrlDto);
+        return ResponseEntity.ok().body(savedDto);
     }
 
     // 3. 단축 URL 정보 조회 API

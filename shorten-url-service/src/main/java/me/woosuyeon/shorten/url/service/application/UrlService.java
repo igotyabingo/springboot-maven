@@ -2,8 +2,11 @@ package me.woosuyeon.shorten.url.service.application;
 
 import me.woosuyeon.shorten.url.service.domain.ShortenUrl;
 import me.woosuyeon.shorten.url.service.infrastructure.ListShortenUrlRepository;
+import me.woosuyeon.shorten.url.service.presentation.ShortenUrlDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.security.SecureRandom;
 
 @Service
 public class UrlService {
@@ -14,23 +17,31 @@ public class UrlService {
         this.listShortenUrlRepository = listShortenUrlRepository;
     }
 
-    public String createNewKey(String originalUrl) {
+    public ShortenUrlDto createNewKey(ShortenUrlDto shortenUrlDto) {
         // 키 생성 알고리즘을 이용해 8자리 문자 키를 생성하고 리포지터리에 새 레코드 저장 후 리턴한다.
-        return "";
+        String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        SecureRandom RANDOM = new SecureRandom();
+        StringBuilder key = new StringBuilder(8);
+
+        for (int i=0; i<8; i++) {
+            key.append(CHARACTERS.charAt(RANDOM.nextInt(CHARACTERS.length())));
+        }
+
+        String createdKey = key.toString();
+        ShortenUrl shortenUrl = listShortenUrlRepository.add(new ShortenUrl(createdKey, shortenUrlDto.getOriginalUrl()));
+        return ShortenUrlDto.toDto(shortenUrl);
     }
 
-    public void redirectToOriginalUrl(String key) {
-        // 키를 리포지터리에서 찾아 original url 필드를 참조하여 리디렉트 시킨다.
+    public String redirectToOriginalUrl(String key) {
+        ShortenUrl shortenUrl = listShortenUrlRepository.updateRedirectedCount(key);
+
+        return shortenUrl.getOriginalUrl();
     }
 
     public Long getCount(String key) {
         // 키를 리포지터리에서 찾아 count 필드를 리턴한다.
-        return 0L;
-    }
-
-    private ShortenUrl findByKey(String key) {
-        // 키를 리포지터리에서 찾아 ShortenUrl 객체를 반환한다.
-        return new ShortenUrl();
+        ShortenUrl shortenUrl = listShortenUrlRepository.findByKey(key);
+        return shortenUrl.getRedirectedCount();
     }
 
 }
