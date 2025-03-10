@@ -1,5 +1,6 @@
 package me.woosuyeon.shorten.url.service.infrastructure;
 
+import me.woosuyeon.shorten.url.service.domain.EntityNotFoundException;
 import me.woosuyeon.shorten.url.service.domain.ShortenUrl;
 import org.springframework.stereotype.Repository;
 
@@ -23,7 +24,7 @@ public class ListShortenUrlRepository {
         return urlList.stream()
                 .filter(shortenUrl -> shortenUrl.sameKey(key))
                 .findFirst()
-                .orElseThrow(); // 예외 클래스 구현해야 함
+                .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 단축 URL입니다."));
     }
 
     public ShortenUrl updateRedirectedCount(String key) {

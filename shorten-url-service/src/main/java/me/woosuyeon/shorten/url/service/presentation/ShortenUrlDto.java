@@ -1,10 +1,12 @@
 package me.woosuyeon.shorten.url.service.presentation;
 
+import jakarta.validation.constraints.NotNull;
 import me.woosuyeon.shorten.url.service.domain.ShortenUrl;
 
 public class ShortenUrlDto {
     private Long id;
     private String key;
+    @NotNull
     private String OriginalUrl;
     private Long RedirectedCount;
 

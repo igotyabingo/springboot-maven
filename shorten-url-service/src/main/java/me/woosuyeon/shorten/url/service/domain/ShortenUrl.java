@@ -1,5 +1,8 @@
 package me.woosuyeon.shorten.url.service.domain;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
 public class ShortenUrl {
     private Long id;
     private String key;
@@ -10,9 +13,15 @@ public class ShortenUrl {
         this.key = key;
     }
 
-    public ShortenUrl(String key, String originalUrl) {
-        this.key = key;
-        OriginalUrl = originalUrl;
+    public ShortenUrl(String key, String originalUrl){
+        try {
+            new URL(originalUrl);
+            this.key = key;
+            OriginalUrl = originalUrl;
+        } catch (MalformedURLException e) {
+            throw new UrlException(e.getMessage());
+        }
+
     }
 
     public ShortenUrl(Long id, String key, String originalUrl, Long redirectedCount) {
