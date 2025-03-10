@@ -38,9 +38,9 @@ public class UrlApiController {
     }
 
     // 3. 단축 URL 정보 조회 API
-    @RequestMapping(value = "/api/count/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Long> getCount(@PathVariable Long id) {
-        Long count = 0L;
+    @RequestMapping(value = "/api/count/{key}", method = RequestMethod.GET)
+    public ResponseEntity<Long> getCount(@PathVariable String key) {
+        Long count = urlService.getCount(key);
         return ResponseEntity.ok().body(count);
     }
 
