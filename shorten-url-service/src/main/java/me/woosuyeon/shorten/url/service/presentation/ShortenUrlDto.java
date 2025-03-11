@@ -1,5 +1,6 @@
 package me.woosuyeon.shorten.url.service.presentation;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import jakarta.validation.constraints.NotNull;
 import me.woosuyeon.shorten.url.service.domain.ShortenUrl;
 
@@ -10,6 +11,10 @@ public class ShortenUrlDto {
     private String OriginalUrl;
     private Long RedirectedCount;
 
+    @JsonCreator
+    public ShortenUrlDto(String originalUrl) {
+        OriginalUrl = originalUrl;
+    }
 
     public ShortenUrlDto(Long id, String key, String originalUrl, Long redirectedCount) {
         this.id = id;
