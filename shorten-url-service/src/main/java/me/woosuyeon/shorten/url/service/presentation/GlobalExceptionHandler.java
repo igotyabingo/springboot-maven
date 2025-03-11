@@ -1,6 +1,7 @@
 package me.woosuyeon.shorten.url.service.presentation;
 
 import me.woosuyeon.shorten.url.service.domain.EntityNotFoundException;
+import me.woosuyeon.shorten.url.service.domain.ExistingKeyException;
 import me.woosuyeon.shorten.url.service.domain.UrlException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,15 +35,24 @@ public class GlobalExceptionHandler {
         errors.add(ex.getMessage());
 
         ErrorMessage errorMessage = new ErrorMessage(errors);
-        return new ResponseEntity(errorMessage, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity(errorMessage, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(UrlException.class)
-    public ResponseEntity<String> URl (UrlException ex) {
+    public ResponseEntity<String> handleUrlFormatException (UrlException ex) {
         List<String> errors = new ArrayList<>();
         errors.add(ex.getMessage());
 
         ErrorMessage errorMessage = new ErrorMessage(errors);
         return new ResponseEntity(errorMessage, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ExistingKeyException.class)
+    public ResponseEntity<String> handleDuplicatedKeyException (ExistingKeyException ex) {
+        List<String> errors = new ArrayList<>();
+        errors.add(ex.getMessage());
+
+        ErrorMessage errorMessage = new ErrorMessage(errors);
+        return new ResponseEntity(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
