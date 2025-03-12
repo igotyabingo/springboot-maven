@@ -16,6 +16,8 @@
                             <input type="text" name="url">
                         </div>
                         <button type="submit" class="btn btn-primary">단축하기</button>
+                        <br>
+                        <h6 class="text-white mt-2">단축된 URL: <span id="generatedUrl"></span></h6>
                     </form>
                 </div>
             </div>
@@ -33,7 +35,10 @@
                 if (currentAjaxRequest.readyState === XMLHttpRequest.DONE) {
                   if (currentAjaxRequest.status === 200) {
                     const createdUrl = JSON.parse(currentAjaxRequest.responseText);
-                    alert(`생성된 url은 http://localhost:8080/${createdUrl.key}입니다. 접속해보세요!`);
+                    const completeShortenUrl = window.location.protocol + "//" + window.location.host + "/" + createdUrl.key;
+
+                    const textLocation = document.querySelector('#generatedUrl');
+                    textLocation.innerHTML = completeShortenUrl
                   } else {
                     console.error('request failed');
                   }
