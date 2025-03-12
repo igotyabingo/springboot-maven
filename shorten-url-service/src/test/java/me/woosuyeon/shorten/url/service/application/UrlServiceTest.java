@@ -2,7 +2,8 @@ package me.woosuyeon.shorten.url.service.application;
 
 import me.woosuyeon.shorten.url.service.domain.EntityNotFoundException;
 import me.woosuyeon.shorten.url.service.domain.UrlException;
-import me.woosuyeon.shorten.url.service.presentation.ShortenUrlDto;
+import me.woosuyeon.shorten.url.service.presentation.CreateShortenUrlRequest;
+import me.woosuyeon.shorten.url.service.presentation.CreateShortenUrlResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +21,8 @@ class UrlServiceTest {
     @Test
     void shortenUrlAndFindByKeyTest() {
         String requestedUrl = "https://www.naver.com";
-        ShortenUrlDto shortenUrlDto = urlService.createNewKey(new ShortenUrlDto(requestedUrl));
-        String createdKey = shortenUrlDto.getKey();
+        CreateShortenUrlResponse response = urlService.createNewKey(new CreateShortenUrlRequest(requestedUrl));
+        String createdKey = response.getKey();
 
         String originalUrl = urlService.redirectToOriginalUrl(createdKey);
         assertTrue(originalUrl.equals(requestedUrl));
@@ -33,7 +34,7 @@ class UrlServiceTest {
         String requestUrl = "www.naver.com";
 
         assertThrows(UrlException.class, () -> {
-            ShortenUrlDto shortenUrlDto = urlService.createNewKey(new ShortenUrlDto(requestUrl));
+            CreateShortenUrlResponse response = urlService.createNewKey(new CreateShortenUrlRequest(requestUrl));
         });
     }
 
@@ -41,8 +42,8 @@ class UrlServiceTest {
     @Test
     void redirectToOriginalURL() {
         String requestedUrl = "https://www.naver.com";
-        ShortenUrlDto shortenUrlDto = urlService.createNewKey(new ShortenUrlDto(requestedUrl));
-        String createdKey = shortenUrlDto.getKey();
+        CreateShortenUrlResponse response = urlService.createNewKey(new CreateShortenUrlRequest(requestedUrl));
+        String createdKey = response.getKey();
 
         String originalUrl = urlService.redirectToOriginalUrl(createdKey);
 

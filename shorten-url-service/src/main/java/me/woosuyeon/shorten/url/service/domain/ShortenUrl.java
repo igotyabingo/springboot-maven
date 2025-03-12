@@ -4,10 +4,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 public class ShortenUrl {
-    private Long id;
     private String key;
-    private String OriginalUrl;
-    private Long RedirectedCount = 0L;
+    private String originalUrl;
+    private Long redirectedCount = 0L;
 
     public ShortenUrl(String key) {
         this.key = key;
@@ -17,30 +16,21 @@ public class ShortenUrl {
         try {
             new URL(originalUrl);
             this.key = key;
-            OriginalUrl = originalUrl;
+            this.originalUrl = originalUrl;
         } catch (MalformedURLException e) {
             throw new UrlException(e.getMessage());
         }
 
     }
 
-    public ShortenUrl(Long id, String key, String originalUrl, Long redirectedCount) {
-        this.id = id;
+    public ShortenUrl(String key, String originalUrl, Long redirectedCount) {
         this.key = key;
-        OriginalUrl = originalUrl;
-        RedirectedCount = redirectedCount;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+        this.originalUrl = originalUrl;
+        this.redirectedCount = redirectedCount;
     }
 
     public void updateCount() {
-        RedirectedCount = RedirectedCount + 1;
-    }
-
-    public Long getId() {
-        return id;
+        redirectedCount = redirectedCount + 1;
     }
 
     public String getKey() {
@@ -48,14 +38,10 @@ public class ShortenUrl {
     }
 
     public String getOriginalUrl() {
-        return OriginalUrl;
+        return originalUrl;
     }
 
     public Long getRedirectedCount() {
-        return RedirectedCount;
-    }
-
-    public Boolean sameKey(String key) {
-        return this.key.equals(key);
+        return redirectedCount;
     }
 }

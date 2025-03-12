@@ -22,9 +22,9 @@ public class UrlApiController {
 
     // 1. 단축 URL 생성 API
     @RequestMapping(value = "/api/create", method = RequestMethod.POST)
-    public ResponseEntity<ShortenUrlDto> createNewKey(@RequestBody @Valid ShortenUrlDto shortenUrlDto) {
-        ShortenUrlDto savedDto = urlService.createNewKey(shortenUrlDto);
-        return ResponseEntity.ok().body(savedDto);
+    public ResponseEntity<CreateShortenUrlResponse> createNewKey(@RequestBody @Valid CreateShortenUrlRequest request) {
+        CreateShortenUrlResponse response = urlService.createNewKey(request);
+        return ResponseEntity.ok().body(response);
     }
 
     // 2. 단축 URL 리다이렉트 API

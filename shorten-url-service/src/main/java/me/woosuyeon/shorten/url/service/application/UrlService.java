@@ -1,9 +1,11 @@
 package me.woosuyeon.shorten.url.service.application;
 
+import me.woosuyeon.shorten.url.service.domain.EntityNotFoundException;
 import me.woosuyeon.shorten.url.service.domain.ExistingKeyException;
 import me.woosuyeon.shorten.url.service.domain.ShortenUrl;
 import me.woosuyeon.shorten.url.service.domain.ShortenUrlRepository;
-import me.woosuyeon.shorten.url.service.presentation.ShortenUrlDto;
+import me.woosuyeon.shorten.url.service.presentation.CreateShortenUrlRequest;
+import me.woosuyeon.shorten.url.service.presentation.CreateShortenUrlResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,22 +20,32 @@ public class UrlService {
         this.shortenUrlRepository = shortenUrlRepository;
     }
 
-    public ShortenUrlDto createNewKey(ShortenUrlDto shortenUrlDto) {
+    public CreateShortenUrlResponse createNewKey(CreateShortenUrlRequest request) {
         // 키 생성 알고리즘을 이용해 8자리 문자 키를 생성하고 리포지터리에 새 레코드 저장 후 리턴한다.
         String createdKey = createCode();
-        ShortenUrl shortenUrl = shortenUrlRepository.add(new ShortenUrl(createdKey, shortenUrlDto.getOriginalUrl()));
-        return ShortenUrlDto.toDto(shortenUrl);
+        ShortenUrl shortenUrl = new ShortenUrl(createdKey, request.getOriginalUrl());
+        shortenUrlRepository.add(shortenUrl);
+
+        return new CreateShortenUrlResponse(shortenUrl);
     }
 
     public String redirectToOriginalUrl(String key) {
         ShortenUrl shortenUrl = shortenUrlRepository.updateRedirectedCount(key);
 
+        if (null == shortenUrl) {
+            throw new EntityNotFoundException("존재하지 않는 단축 URL입니다.");
+        }
+
         return shortenUrl.getOriginalUrl();
     }
 
     public Long getCount(String key) {
-        // 키를 리포지터리에서 찾아 count 필드를 리턴한다.
         ShortenUrl shortenUrl = shortenUrlRepository.findByKey(key);
+
+        if (null == shortenUrl) {
+            throw new EntityNotFoundException("존재하지 않는 단축 URL입니다.");
+        }
+
         return shortenUrl.getRedirectedCount();
     }
 
