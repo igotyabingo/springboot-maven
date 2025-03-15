@@ -20,7 +20,7 @@ public class ListOrderRepository implements OrderRepository {
         return orders.stream()
                 .filter(order -> order.sameId(id))
                 .findFirst()
-                .orElseThrow(() -> new EntityNotFoundException("Product를 찾지 못했습니다."));
+                .orElseThrow(() -> new EntityNotFoundException("Order를 찾지 못했습니다."));
     }
 
     @Override
@@ -33,6 +33,12 @@ public class ListOrderRepository implements OrderRepository {
         this.orders.add(order);
 
         return order;
+    }
+
+    @Override
+    public void update(Order order) {
+        Integer indexToModify = orders.indexOf(order);
+        orders.set(indexToModify, order);
     }
 
 }

@@ -11,4 +11,9 @@ public class OrderRequestDto {
     public Integer getAmount() {
         return amount;
     }
+
+    public OrderRequestDto(Long id, Integer amount) {
+        this.id = id;
+        this.amount = amount;
+    }
 }
