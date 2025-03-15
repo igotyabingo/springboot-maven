@@ -38,19 +38,21 @@ public class OrderRestController {
 
     // 3. 주문번호로 조회 API
     @RequestMapping(value = "/orders/{orderId}", method = RequestMethod.GET)
-    public ResponseEntity<OrderResponseDto> getOrderByOrderId(@PathVariable String orderId) {
-        return null;
+    public ResponseEntity<OrderResponseDto> getOrderByOrderId(@PathVariable Long orderId) {
+        OrderResponseDto response = simpleOrderService.getOrderByOrderId(orderId);
+        return ResponseEntity.ok(response);
     }
 
     // 4. 주문상태로 조회 API
     @RequestMapping(value = "/orders", method = RequestMethod.GET)
-    public ResponseEntity<List<OrderResponseDto>> getOrderByStatus(@RequestParam String state) {
-        return null;
+    public ResponseEntity<List<OrderResponseDto>> getOrderByState(@RequestParam String state) {
+        List<OrderResponseDto> response = simpleOrderService.getOrderByState(state);
+        return ResponseEntity.ok(response);
     }
 
     // 5. 주문 취소 API
     @RequestMapping(value = "/orders/{orderId}/cancel", method = RequestMethod.PATCH)
-    public ResponseEntity<OrderResponseDto> cancelOrder(@PathVariable String orderId) {
+    public ResponseEntity<OrderResponseDto> cancelOrder(@PathVariable Long orderId) {
         return null;
     }
 

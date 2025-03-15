@@ -36,6 +36,13 @@ public class ListOrderRepository implements OrderRepository {
     }
 
     @Override
+    public List<Order> findByState(String state) {
+        return orders.stream()
+                .filter(order -> order.sameState(state))
+                .toList();
+    }
+
+    @Override
     public void update(Order order) {
         Integer indexToModify = orders.indexOf(order);
         orders.set(indexToModify, order);

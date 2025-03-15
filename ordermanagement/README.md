@@ -133,7 +133,7 @@
 요청 메서드 : PATCH   
 요청 경로 : /orders/{orderId}   
 
-#### 변경 성공(/orders/2)   
+#### 변경 성공(/orders/1)   
 요청 바디   
 ```json
 {

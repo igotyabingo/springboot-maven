@@ -41,6 +41,21 @@ public class SimpleOrderService {
         orderRepository.update(changedOrder);
         return OrderResponseDto.toDto(changedOrder);
     }
+
+    public OrderResponseDto getOrderByOrderId(Long id) {
+        Order order = orderRepository.findById(id);
+
+        return OrderResponseDto.toDto(order);
+    }
+
+    public List<OrderResponseDto> getOrderByState(String state) {
+        List<Order> orders = orderRepository.findByState(state);
+
+        List<OrderResponseDto> orderDtos = orders.stream()
+                                            .map(order -> OrderResponseDto.toDto(order))
+                                            .toList();
+        return orderDtos;
+    }
     private List<Product> toOrderedProducts(List<OrderRequestDto> orders) {
         List<Product> orderedProducts = orders.stream()
                 .map(order -> {

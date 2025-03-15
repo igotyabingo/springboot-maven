@@ -14,6 +14,9 @@ public class Order {
     public boolean sameId(Long id) {
         return this.id.equals(id);
     }
+    public boolean sameState(String state) {
+        return this.state.equals(state);
+    }
 
     @Override
     public boolean equals(Object o) {
