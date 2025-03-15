@@ -3,9 +3,7 @@ package kr.co.ordermanagement.presentation.controller;
 import kr.co.ordermanagement.application.SimpleOrderService;
 import kr.co.ordermanagement.presentation.dto.OrderRequestDto;
 import kr.co.ordermanagement.presentation.dto.OrderResponseDto;
-import kr.co.ordermanagement.presentation.dto.ProductDto;
 import kr.co.ordermanagement.presentation.dto.StateChangeRequestDto;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -53,7 +51,8 @@ public class OrderRestController {
     // 5. 주문 취소 API
     @RequestMapping(value = "/orders/{orderId}/cancel", method = RequestMethod.PATCH)
     public ResponseEntity<OrderResponseDto> cancelOrder(@PathVariable Long orderId) {
-        return null;
+        OrderResponseDto response = simpleOrderService.cancelOrder(orderId);
+        return ResponseEntity.ok(response);
     }
 
 }

@@ -1,5 +1,6 @@
 package kr.co.ordermanagement.application;
 
+import kr.co.ordermanagement.domain.exception.InvalidStateException;
 import kr.co.ordermanagement.domain.exception.LackOfStockException;
 import kr.co.ordermanagement.domain.order.Order;
 import kr.co.ordermanagement.domain.order.OrderRepository;
@@ -7,11 +8,9 @@ import kr.co.ordermanagement.domain.product.Product;
 import kr.co.ordermanagement.domain.product.ProductRepository;
 import kr.co.ordermanagement.presentation.dto.OrderRequestDto;
 import kr.co.ordermanagement.presentation.dto.OrderResponseDto;
-import kr.co.ordermanagement.presentation.dto.ProductDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -56,6 +55,18 @@ public class SimpleOrderService {
                                             .toList();
         return orderDtos;
     }
+
+    public OrderResponseDto cancelOrder(Long id) {
+        Order order = orderRepository.findById(id);
+
+        if (!order.getState().equals("CREATED"))
+            throw new InvalidStateException("이미 취소되었거나 취소할 수 없는 주문상태입니다.");
+
+        Order changedOrder = new Order(order.getId(), order.getOrderedProducts(), order.getTotalPrice(), "CANCELED");
+        orderRepository.update(changedOrder);
+        return OrderResponseDto.toDto(changedOrder);
+    }
+
     private List<Product> toOrderedProducts(List<OrderRequestDto> orders) {
         List<Product> orderedProducts = orders.stream()
                 .map(order -> {
