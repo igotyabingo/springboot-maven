@@ -3,8 +3,10 @@ package kr.co.ordermanagement.presentation.controller;
 import kr.co.ordermanagement.application.SimpleOrderService;
 import kr.co.ordermanagement.presentation.dto.OrderRequestDto;
 import kr.co.ordermanagement.presentation.dto.OrderResponseDto;
+import kr.co.ordermanagement.presentation.dto.ProductDto;
 import kr.co.ordermanagement.presentation.dto.StateChangeRequestDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,8 +23,9 @@ public class OrderRestController {
 
     // 1. 상품 주문 API
     @RequestMapping(value = "/orders", method = RequestMethod.POST)
-    public OrderResponseDto orderCame(@RequestBody List<OrderRequestDto> orderRequestDto) {
-        return null;
+    public ResponseEntity<OrderResponseDto> orderCame(@RequestBody List<OrderRequestDto> orderRequestDto) {
+        OrderResponseDto response = simpleOrderService.processOrderList(orderRequestDto);
+        return ResponseEntity.ok(response);
     }
 
     // 2. 주문 상태 강제 변경 API

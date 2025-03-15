@@ -42,4 +42,8 @@ public class ProductDto {
         return productDto;
     }
 
+    public static Product toEntity(ProductDto productDto) {
+        return new Product(productDto.getId(), productDto.getName(), productDto.getPrice(), productDto.getAmount());
+    }
+
 }
