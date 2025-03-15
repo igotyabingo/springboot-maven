@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>kr.co</groupId>
-	<artifactId>ordermanagement</artifactId>
+	<artifactId>management</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>ordermanagement</name>
 	<description>주문 관리 API</description>
