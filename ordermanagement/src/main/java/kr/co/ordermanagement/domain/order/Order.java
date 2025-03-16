@@ -9,12 +9,12 @@ public class Order {
     private Long id;
     private List<Product> orderedProducts;
     private Integer totalPrice;
-    private String state = "CREATED";
+    private State state = State.CREATED;
 
     public boolean sameId(Long id) {
         return this.id.equals(id);
     }
-    public boolean sameState(String state) {
+    public boolean sameState(State state) {
         return this.state.equals(state);
     }
 
@@ -32,15 +32,20 @@ public class Order {
         this.totalPrice = totalPrice;
     }
 
-    public Order(Long id, List<Product> orderedProducts, Integer totalPrice, String state) {
+    public Order(Long id, List<Product> orderedProducts, Integer totalPrice, State state) {
         this.id = id;
         this.orderedProducts = orderedProducts;
         this.totalPrice = totalPrice;
         this.state = state;
     }
 
-    public void changeState(String state) {
+    public void changeState(State state) {
         this.state = state;
+    }
+
+    public void cancel() {
+        this.state.checkCancellable();
+        this.state = State.CANCELED;
     }
 
     public Long getId() {
@@ -55,7 +60,7 @@ public class Order {
         return totalPrice;
     }
 
-    public String getState() {
+    public State getState() {
         return state;
     }
 }

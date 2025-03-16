@@ -7,5 +7,5 @@ import java.util.List;
 public interface OrderRepository {
     public Order findById(Long id);
     public Order addOrders(List<Product> orders);
-    public List<Order> findByState(String state);
+    public List<Order> findByState(State state);
 }

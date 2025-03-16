@@ -4,6 +4,7 @@ import kr.co.ordermanagement.domain.exception.InvalidStateException;
 import kr.co.ordermanagement.domain.exception.LackOfStockException;
 import kr.co.ordermanagement.domain.order.Order;
 import kr.co.ordermanagement.domain.order.OrderRepository;
+import kr.co.ordermanagement.domain.order.State;
 import kr.co.ordermanagement.domain.product.Product;
 import kr.co.ordermanagement.domain.product.ProductRepository;
 import kr.co.ordermanagement.presentation.dto.OrderRequestDto;
@@ -33,7 +34,7 @@ public class SimpleOrderService {
         return OrderResponseDto.toDto(order);
     }
 
-    public OrderResponseDto changeOrderState(Long id, String state) {
+    public OrderResponseDto changeOrderState(Long id, State state) {
         Order order = orderRepository.findById(id);
         order.changeState(state);
 
@@ -46,7 +47,7 @@ public class SimpleOrderService {
         return OrderResponseDto.toDto(order);
     }
 
-    public List<OrderResponseDto> getOrderByState(String state) {
+    public List<OrderResponseDto> getOrderByState(State state) {
         List<Order> orders = orderRepository.findByState(state);
 
         List<OrderResponseDto> orderDtos = orders.stream()
@@ -57,11 +58,7 @@ public class SimpleOrderService {
 
     public OrderResponseDto cancelOrder(Long id) {
         Order order = orderRepository.findById(id);
-
-        if (!order.getState().equals("CREATED"))
-            throw new InvalidStateException("이미 취소되었거나 취소할 수 없는 주문상태입니다.");
-
-        order.changeState("CANCELED");
+        order.cancel();
         return OrderResponseDto.toDto(order);
     }
 
