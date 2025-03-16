@@ -3,6 +3,7 @@ package kr.co.ordermanagement.infrastructure;
 import kr.co.ordermanagement.domain.exception.EntityNotFoundException;
 import kr.co.ordermanagement.domain.order.Order;
 import kr.co.ordermanagement.domain.order.OrderRepository;
+import kr.co.ordermanagement.domain.order.OrderedProduct;
 import kr.co.ordermanagement.domain.order.State;
 import kr.co.ordermanagement.domain.product.Product;
 import org.springframework.stereotype.Repository;
@@ -25,7 +26,7 @@ public class ListOrderRepository implements OrderRepository {
     }
 
     @Override
-    public Order addOrders(List<Product> orders) {
+    public Order addOrders(List<OrderedProduct> orders) {
         Integer total_price = orders.stream()
                 .mapToInt(order -> order.getAmount()*order.getPrice())
                 .sum();

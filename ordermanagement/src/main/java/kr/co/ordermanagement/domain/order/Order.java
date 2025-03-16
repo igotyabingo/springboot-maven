@@ -7,7 +7,7 @@ import java.util.Objects;
 
 public class Order {
     private Long id;
-    private List<Product> orderedProducts;
+    private List<OrderedProduct> orderedProducts;
     private Integer totalPrice;
     private State state = State.CREATED;
 
@@ -26,13 +26,13 @@ public class Order {
         return Objects.equals(id, order.id);
     }
 
-    public Order(Long id, List<Product> orderedProducts, Integer totalPrice) {
+    public Order(Long id, List<OrderedProduct> orderedProducts, Integer totalPrice) {
         this.id = id;
         this.orderedProducts = orderedProducts;
         this.totalPrice = totalPrice;
     }
 
-    public Order(Long id, List<Product> orderedProducts, Integer totalPrice, State state) {
+    public Order(Long id, List<OrderedProduct> orderedProducts, Integer totalPrice, State state) {
         this.id = id;
         this.orderedProducts = orderedProducts;
         this.totalPrice = totalPrice;
@@ -52,7 +52,7 @@ public class Order {
         return id;
     }
 
-    public List<Product> getOrderedProducts() {
+    public List<OrderedProduct> getOrderedProducts() {
         return orderedProducts;
     }
 

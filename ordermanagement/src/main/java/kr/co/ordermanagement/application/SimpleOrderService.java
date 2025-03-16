@@ -1,9 +1,9 @@
 package kr.co.ordermanagement.application;
 
-import kr.co.ordermanagement.domain.exception.InvalidStateException;
 import kr.co.ordermanagement.domain.exception.LackOfStockException;
 import kr.co.ordermanagement.domain.order.Order;
 import kr.co.ordermanagement.domain.order.OrderRepository;
+import kr.co.ordermanagement.domain.order.OrderedProduct;
 import kr.co.ordermanagement.domain.order.State;
 import kr.co.ordermanagement.domain.product.Product;
 import kr.co.ordermanagement.domain.product.ProductRepository;
@@ -27,7 +27,7 @@ public class SimpleOrderService {
     }
 
     public OrderResponseDto processOrderList(List<OrderRequestDto> orders) {
-        List<Product> orderedProducts = toOrderedProducts(orders);
+        List<OrderedProduct> orderedProducts = toOrderedProducts(orders);
         decreaseAmounts(orderedProducts);
 
         Order order = orderRepository.addOrders(orderedProducts);
@@ -62,22 +62,22 @@ public class SimpleOrderService {
         return OrderResponseDto.toDto(order);
     }
 
-    private List<Product> toOrderedProducts(List<OrderRequestDto> orders) {
-        List<Product> orderedProducts = orders.stream()
+    private List<OrderedProduct> toOrderedProducts(List<OrderRequestDto> orders) {
+        List<OrderedProduct> orderedProducts = orders.stream()
                 .map(order -> {
                     Long id = order.getId();
                     Product product = productRepository.findById(id);
                     if (product.getAmount() < order.getAmount())
                         throw new LackOfStockException(id +"번 상품의 수량이 부족합니다.");
 
-                    return new Product(id, product.getName(), product.getPrice(), order.getAmount());
+                    return new OrderedProduct(id, product.getName(), product.getPrice(), order.getAmount());
                 })
                 .toList();
 
         return orderedProducts;
     }
 
-    private void decreaseAmounts(List<Product> orderedProducts) {
+    private void decreaseAmounts(List<OrderedProduct> orderedProducts) {
         orderedProducts.stream()
                 .forEach(order -> {
                     Product product = productRepository.findById(order.getId());
