@@ -8,5 +8,4 @@ public interface OrderRepository {
     public Order findById(Long id);
     public Order addOrders(List<Product> orders);
     public List<Order> findByState(String state);
-    public void update(Order order);
 }

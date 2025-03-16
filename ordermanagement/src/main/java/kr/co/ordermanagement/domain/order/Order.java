@@ -39,6 +39,10 @@ public class Order {
         this.state = state;
     }
 
+    public void changeState(String state) {
+        this.state = state;
+    }
+
     public Long getId() {
         return id;
     }

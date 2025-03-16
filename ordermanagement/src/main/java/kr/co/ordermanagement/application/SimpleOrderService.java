@@ -35,10 +35,9 @@ public class SimpleOrderService {
 
     public OrderResponseDto changeOrderState(Long id, String state) {
         Order order = orderRepository.findById(id);
-        Order changedOrder = new Order(order.getId(), order.getOrderedProducts(), order.getTotalPrice(), state);
+        order.changeState(state);
 
-        orderRepository.update(changedOrder);
-        return OrderResponseDto.toDto(changedOrder);
+        return OrderResponseDto.toDto(order);
     }
 
     public OrderResponseDto getOrderByOrderId(Long id) {
@@ -62,9 +61,8 @@ public class SimpleOrderService {
         if (!order.getState().equals("CREATED"))
             throw new InvalidStateException("이미 취소되었거나 취소할 수 없는 주문상태입니다.");
 
-        Order changedOrder = new Order(order.getId(), order.getOrderedProducts(), order.getTotalPrice(), "CANCELED");
-        orderRepository.update(changedOrder);
-        return OrderResponseDto.toDto(changedOrder);
+        order.changeState("CANCELED");
+        return OrderResponseDto.toDto(order);
     }
 
     private List<Product> toOrderedProducts(List<OrderRequestDto> orders) {
@@ -86,7 +84,7 @@ public class SimpleOrderService {
         orderedProducts.stream()
                 .forEach(order -> {
                     Product product = productRepository.findById(order.getId());
-                    productRepository.update(new Product(product.getId(), product.getName(), product.getPrice(), product.getAmount() - order.getAmount()));
+                    product.decreaseAmount(order.getAmount());
                 });
     }
 }

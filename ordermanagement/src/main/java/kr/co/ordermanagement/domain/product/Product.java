@@ -35,6 +35,10 @@ public class Product {
         return this.id.equals(id);
     }
 
+    public void decreaseAmount(Integer amount) {
+        this.amount = this.amount - amount;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
